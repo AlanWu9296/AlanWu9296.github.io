@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2019 Waiver Coding Challenge</title>
+</head>
+<body>
+    <canvas id="canvas"></canvas>
+    <input type="color" id="colorPicker" value="#FF0000">
+</body>
+
+<style>
+    #canvas{
+        border: 1px gray solid;
+    }
+</style>
+
+<script>
+    let isDrawing = true
+    let penColor = 'red'
+    let penSize = 30
+    let colorPicker = document.querySelector('#colorPicker')
+    let canvas = document.querySelector('#canvas')
+    let ctx = canvas.getContext('2d')
+
+
+    // initialize & resize the canvas according to the window
+    let resize = ()=>{
+        canvas.width = window.innerWidth * 0.8
+        canvas.height = window.innerHeight * 0.8
+    }
+    window.addEventListener('load',resize)
+    window.addEventListener('resize', resize)
+
+    // move mouse to draw default color red
+    let draw = (e)=>{
+        ctx.fillStyle = penColor
+        let x = e.offsetX || e.touches[0].pageX
+        let y = e.offsetY || e.touches[0].pageY
+        if(isDrawing){ctx.fillRect(x-penSize/2, y-penSize/2, penSize, penSize)}
+    }
+    canvas.addEventListener('mousemove', e=>draw(e))
+    canvas.addEventListener('touchmove', e=>draw(e))
+
+    // change color by colorPicker
+    colorPicker.addEventListener('change',e => penColor=e.target.value)
+
+    // press keyboard to change colors / isDrawing, clear canvas, 
+    document.addEventListener('keydown',e=>{
+        switch(e.key){
+            case "b":
+                penColor = 'blue'
+                break
+            case "g":
+                penColor = 'green'
+                break
+            case "r":
+                penColor = 'red'
+                break
+            case "y":
+                penColor = 'yellow'
+                break
+            case "ArrowUp":
+                isDrawing = false
+                break
+            case "ArrowDown":
+                isDrawing = true
+                break
+            case " ":
+                ctx.clearRect(0,0,canvas.width,canvas.height)
+                break
+
+        }
+    })
+
+</script>
+
+</html>
